@@ -1,5 +1,6 @@
 import os
 import configparser
+import re
 from tkinter import Tk, filedialog, Listbox, Label, END, messagebox, Frame
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
@@ -49,7 +50,8 @@ def create_index(files, key_words):
             content = f.read()
             print(f"Reading file: {file}")  # Debug message
             for word in key_words:
-                word_count = content.count(word)
+                word_pattern = r'\b' + re.escape(word) + r'\b'
+                word_count = len(re.findall(word_pattern, content))
                 index[word] += word_count
                 print(f"Found {word_count} occurrences of '{word}' in {file}")  # Debug message
     return index
