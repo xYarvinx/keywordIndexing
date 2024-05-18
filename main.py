@@ -36,7 +36,7 @@ def list_txt_files(base_directory):
 
 def read_key_words():
     try:
-        with open('KeyList.txt', 'r') as file:
+        with open('KeyList.txt', 'r', encoding='utf-8') as file:
             return [line.strip() for line in file.readlines()]
     except FileNotFoundError:
         messagebox.showerror("Error", "KeyList.txt not found")
@@ -47,8 +47,11 @@ def create_index(files, key_words):
     for file in files:
         with open(file, 'r', encoding='utf-8') as f:
             content = f.read()
+            print(f"Reading file: {file}")  # Debug message
             for word in key_words:
-                index[word] += content.count(word)
+                word_count = content.count(word)
+                index[word] += word_count
+                print(f"Found {word_count} occurrences of '{word}' in {file}")  # Debug message
     return index
 
 def browse_directory():
@@ -85,7 +88,6 @@ def show_statistics():
 
     statistics = []
     for word in selected_key_words:
-        count = sum(index[word] for word in selected_key_words)
         statistics.append(f"{word}: {index[word]}")
 
     statistics_message = "\n".join(statistics)
